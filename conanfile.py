@@ -12,27 +12,15 @@ class Libp2pConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = "shared=False"
-    generators = "cmake"
-
-    def source(self):
-        self.run("git clone https://github.com/conan-io/hello.git")
-        # This small hack might be useful to guarantee proper /MT /MD linkage
-        # in MSVC if the packaged project doesn't have variables to set it
-        # properly
-        tools.replace_in_file("hello/CMakeLists.txt", "PROJECT(HelloWorld)",
-                              '''PROJECT(HelloWorld)
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()''')
+    generators = "cmake", "cmake_find_package"
+    requires = "protobuf/3.9.1@bincrafters/stable"
+    build_requires = "protoc_installer/3.9.1@bincrafters/stable"
+    exports_sources = "*"
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="hello")
+        cmake.configure(source_folder=self.source_folder)
         cmake.build()
-
-        # Explicit way:
-        # self.run('cmake %s/hello %s'
-        #          % (self.source_folder, cmake.command_line))
-        # self.run("cmake --build . %s" % cmake.build_config)
 
     def package(self):
         self.copy("*.h", dst="include", src="hello")
@@ -43,5 +31,5 @@ conan_basic_setup()''')
         self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["hello"]
+        self.cpp_info.cppflags = ["-std=c++17"]
 
