@@ -10,6 +10,8 @@ file(GLOB PROTOS proto/*.proto)
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTOS})
 message(STATUS ${PROTO_HDRS})
 
-add_library(${PROJECT_NAME} ${PROTO_SRCS} ${PROTO_HDRS} src/peer.cpp)
+add_library(${PROJECT_NAME} ${PROTO_SRCS} ${PROTO_HDRS}
+    src/general/peer-id.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC CONAN_PKG::protobuf)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}
+    PUBLIC include)
