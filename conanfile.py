@@ -10,10 +10,13 @@ class Libp2pConan(ConanFile):
     description = "<Description of Libp2p here>"
     topics = ("<Put some tag here>", "<here>", "<and here>")
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
+    options = {
+        "shared": [True, False],
+        "with_plaintext": [True, False]
+    }
+    default_options = "shared=False", "with_plaintext=True"
     generators = "cmake", "cmake_find_package"
-    requires = "protobuf/3.9.1@bincrafters/stable"
+    requires = "protobuf/3.9.1@bincrafters/stable", "openssl/1.1.1c"
     build_requires = "protoc_installer/3.9.1@bincrafters/stable"
     exports_sources = "*"
 

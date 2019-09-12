@@ -1,0 +1,54 @@
+syntax = "proto2";
+
+// revision: r2, 2019-02-01
+
+message RPC {
+	repeated SubOpts subscriptions = 1;
+	repeated Message publish = 2;
+
+	message SubOpts {
+		optional bool subscribe = 1;
+		optional string topicid = 2;
+	}
+}
+
+message Message {
+	optional string from = 1;
+	optional bytes data = 2;
+	optional bytes seqno = 3;
+	repeated string topicIDs = 4;
+	optional bytes signature = 5;
+	optional bytes key = 6;
+}
+
+message TopicDescriptor {
+	optional string name = 1;
+	// AuthOpts and EncOpts are unused as of Oct 2018, but
+	// are planned to be used in future.
+	optional AuthOpts auth = 2;
+	optional EncOpts enc = 3;
+
+	message AuthOpts {
+		optional AuthMode mode = 1;
+		repeated bytes keys = 2;
+
+		enum AuthMode {
+			NONE = 0;
+			KEY = 1;
+			WOT = 2;
+		}
+	}
+
+	message EncOpts {
+		optional EncMode mode = 1;
+		repeated bytes keyHashes = 2;
+
+		enum EncMode {
+			NONE = 0;
+			SHAREDKEY = 1;
+			WOT = 2;
+		}
+	}
+}
+
+

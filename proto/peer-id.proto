@@ -1,5 +1,7 @@
 syntax = "proto2";
 
+// revision: r0, 2019-05-23
+
 enum KeyType {
 	RSA = 0;
 	Ed25519 = 1;
@@ -15,4 +17,10 @@ message PublicKey {
 message PrivateKey {
 	required KeyType Type = 1;
 	required bytes Data = 2;
+}
+
+// from plaintext r0, 2019-05-27
+message Exchange {
+  optional bytes id = 1;
+  optional PublicKey pubkey = 2;
 }

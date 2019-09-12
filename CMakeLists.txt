@@ -6,6 +6,10 @@ conan_basic_setup(TARGETS)
 
 find_package(Protobuf REQUIRED)
 
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS proto/peer-id.proto)
+file(GLOB PROTOS proto/*.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTOS})
+message(STATUS ${PROTO_HDRS})
 
-add_library(${PROJECT_NAME} src/peer-id.cpp)
+add_library(${PROJECT_NAME} ${PROTO_SRCS} ${PROTO_HDRS} src/peer.cpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC CONAN_PKG::protobuf)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR})
