@@ -16,9 +16,17 @@ class Libp2pConan(ConanFile):
     }
     default_options = "shared=False", "with_plaintext=True"
     generators = "cmake", "cmake_find_package"
-    requires = "protobuf/3.9.1@bincrafters/stable", "openssl/1.1.1c"
+    requires = (
+        "multiformats/0.1@matt1795/testing",
+        "protobuf/3.9.1@bincrafters/stable",
+        "OpenSSL/latest_1.1.1x@conan/stable",
+        "asio/1.13.0@bincrafters/stable"
+    )
     build_requires = "protoc_installer/3.9.1@bincrafters/stable"
     exports_sources = "*"
+
+    def configure(self):
+        self.options["asio"].with_openssl = True
 
     def build(self):
         cmake = CMake(self)
