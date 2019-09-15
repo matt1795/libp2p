@@ -1,0 +1,12 @@
+image: conanio/gcc63
+
+build:
+  before_script:
+    # Upgrade Conan version
+    - sudo pip install --upgrade conan
+    # Automatic detection of your arch, compiler, etc.
+    - conan user
+
+  script:
+    # Download dependencies, build, test and create package
+    - conan create . user/channel
