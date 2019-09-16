@@ -30,6 +30,7 @@ class Libp2pConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        cmake.definitions["protobuf_MODULE_COMPATIBLE"] = True
         cmake.configure(source_folder=self.source_folder)
         cmake.build()
 
