@@ -1,12 +1,46 @@
-image: conanio/gcc63
 
-build:
-  before_script:
-    # Upgrade Conan version
-    - sudo pip install --upgrade conan
-    # Automatic detection of your arch, compiler, etc.
-    - conan user
+variables:
+    CONAN_USERNAME: "matt1795"
+    CONAN_REFERENCE: "libp2p/0.1"
+    CONAN_CHANNEL: "testing"
+    CONAN_UPLOAD: "https://api.bintray.com/conan/matt1795/public-conan"
+    REMOTE_NAME: "remote"
 
-  script:
-    # Download dependencies, build, test and create package
-    - conan create . user/channel
+.build-template: &build-template
+    before_script:
+        - sudo pip install --upgrade conan_package_tools
+        - conan remote add $REMOTE_NAME $CONAN_UPLOAD
+        - conan user
+        - conan --version
+    script:
+        - conan create . $CONAN_USERNAME/$CONAN_CHANNEL
+
+gcc-7:
+    image: conanio/gcc7
+    variables:
+        CONAN_GCC_VERSIONS: "7"
+    <<: *build-template
+
+gcc-8:
+    image: conanio/gcc8
+    variables:
+        CONAN_GCC_VERSIONS: "8"
+    <<: *build-template
+
+clang-6.0:
+    image: conanio/clang60
+    variables:
+        CONAN_CLANG_VERSIONS: "6.0"
+    <<: *build-template
+
+clang-7.0:
+    image: conanio/clang7
+    variables:
+        CONAN_CLANG_VERSIONS: "7.0"
+    <<: *build-template
+
+clang-8.0:
+    image: conanio/clang8
+    variables:
+        CONAN_CLANG_VERSIONS: "8.0"
+    <<: *build-template
