@@ -26,4 +26,4 @@ install:
   - conan --version
 
 build_script:
-  - conan create . %CONAN_USERNAME%/testing
+  - conan create . %CONAN_USERNAME%/testing --build missing
