@@ -13,7 +13,7 @@ variables:
         - conan user
         - conan --version
     script:
-        - conan create . $CONAN_USERNAME/$CONAN_CHANNEL -- build missing
+        - conan create . $CONAN_USERNAME/$CONAN_CHANNEL --build missing
 
 gcc-7:
     image: conanio/gcc7
