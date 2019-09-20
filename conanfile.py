@@ -27,6 +27,8 @@ class Libp2pConan(ConanFile):
 
     def configure(self):
         self.options["asio"].with_openssl = True
+        if self.settings.compiler in ["gcc", "clang"] and self.settings.compiler.libcxx != "libstdc++11":
+            raise Exception("need to use libstdc++11 for compiler.libcxx")
 
     def build(self):
         cmake = CMake(self)
@@ -35,13 +37,13 @@ class Libp2pConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("*.h", dst="include", src="hello")
-        self.copy("*hello.lib", dst="lib", keep_path=False)
+        self.copy("include/*.hpp", dst="include", src=".")
+        self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.dylib", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.cppflags = ["-std=c++17"]
-
+        pass
+        # TODO: pass down C++17 req

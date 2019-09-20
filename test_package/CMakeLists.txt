@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(Libp2pTest CXX)
+project(Libp2pTests CXX)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()

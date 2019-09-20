@@ -1,4 +1,3 @@
-
 variables:
     CONAN_USERNAME: "matt1795"
     CONAN_REFERENCE: "libp2p/0.1"
@@ -13,7 +12,10 @@ variables:
         - conan user
         - conan --version
     script:
-        - conan create . $CONAN_USERNAME/$CONAN_CHANNEL --build missing
+        - conan create . $CONAN_USERNAME/$CONAN_CHANNEL -s compiler.libcxx=libstdc++11 --build missing
+    artifacts:
+        reports:
+            junit: test_package/build/**/results.xml
 
 gcc-7:
     image: conanio/gcc7
