@@ -12,26 +12,31 @@ class Libp2pConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False],
-        "with_plaintext": [True, False]
+        "with_plaintext": [True, False],
+        "with_tests": [True, False]
     }
-    default_options = "shared=False", "with_plaintext=True"
+    default_options = "shared=False", "with_plaintext=True", "with_tests=True"
     generators = "cmake", "cmake_find_package"
     requires = (
         "multiformats/0.1@matt1795/testing",
         "protobuf/3.9.1@bincrafters/stable",
-        "OpenSSL/latest_1.1.1x@conan/stable",
+        "OpenSSL/1.1.1b@conan/stable",
         "asio/1.13.0@bincrafters/stable"
     )
-    build_requires = "protoc_installer/3.9.1@bincrafters/stable"
+    build_requires = "protoc_installer/3.9.1@bincrafters/stable", "nodejs_installer/10.15.0@bincrafters/stable"
     exports_sources = "*"
 
     def configure(self):
         self.options["asio"].with_openssl = True
+
+        self.requires("gtest/1.8.1@bincrafters/stable")
+        self.options["gtest"].build_gmock = False
         if self.settings.compiler in ["gcc", "clang"] and self.settings.compiler.libcxx != "libstdc++11":
             raise Exception("need to use libstdc++11 for compiler.libcxx")
 
     def build(self):
         cmake = CMake(self)
+        cmake.definitions['WITH_GMOCK'] = self.options['gtest'].build_gmock
         cmake.definitions["protobuf_MODULE_COMPATIBLE"] = True
         cmake.configure(source_folder=self.source_folder)
         cmake.build()
