@@ -15,26 +15,24 @@
 
 namespace Libp2p {
     class PeerId {
-        enum class KeyType {
-            Rsa,
-            Ed25519,
-            Secp256k1,
-            Ecdsa
-        };
+      public:
+        enum class KeyType { Rsa, Ed25519, Secp256k1, Ecdsa };
 
         struct Key {
             KeyType key_type;
             std::vector<std::uint8_t> data;
         };
 
-        Key private_key;
-        Key public_key;
+      private:
+        KeyType key_type;
+        std::vector<std::uint8_t> public_key;
+        std::vector<std::uint8_t> private_key;
 
-        public:
+      public:
         /** @brief Generate new peer-id */
         PeerId(KeyType key_type = KeyType::Rsa);
 
         /** @brief Convert public key to CID */
         Multiformats::Cid to_cid();
     };
-}
+} // namespace Libp2p

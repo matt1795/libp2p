@@ -3,10 +3,10 @@ syntax = "proto2";
 // revision: r0, 2019-05-23
 
 enum KeyType {
-	RSA = 0;
+	Rsa = 0;
 	Ed25519 = 1;
 	Secp256k1 = 2;
-	ECDSA = 3;
+	Ecdsa = 3;
 }
 
 message PublicKey {

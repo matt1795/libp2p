@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 class Libp2pConan(ConanFile):
     name = "libp2p"
-    version = "0.1"
+    version = "0.1.0"
     license = "<Put the package license here>"
     author = "<Put your name here> <And your email here>"
     url = "<Package recipe repository url here, for issues about the package>"
@@ -21,9 +21,10 @@ class Libp2pConan(ConanFile):
         "multiformats/0.1@matt1795/testing",
         "protobuf/3.9.1@bincrafters/stable",
         "OpenSSL/1.1.1b@conan/stable",
-        "asio/1.13.0@bincrafters/stable"
+        "asio/1.13.0@bincrafters/stable",
+        "cryptopp/8.2.0@bincrafters/stable"
     )
-    build_requires = "protoc_installer/3.9.1@bincrafters/stable", "nodejs_installer/10.15.0@bincrafters/stable"
+    build_requires = "protoc_installer/3.9.1@bincrafters/stable"
     exports_sources = "*"
 
     def configure(self):
@@ -42,7 +43,7 @@ class Libp2pConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("include/*.hpp", dst="include", src=".")
+        self.copy("include/*.hpp", dst=".", src=".")
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
